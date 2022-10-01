@@ -15,11 +15,14 @@ public class PlayerController : MonoBehaviour
 
     public float moveSpeed = 8f;
     public float accelerationTime = 0.2f;
-    public int latestDirection = 1;
+    public int latestDirectionX = 1;
+    public int latestDirectionY = -1;
 
     public Animator animator;
     public GameObject face;
     public GameObject clockFlipTransform;
+
+    public SpriteRenderer[] clockSRs;
 
     void Start()
     {
@@ -44,26 +47,28 @@ public class PlayerController : MonoBehaviour
         transform.Translate(velocity * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.LeftArrow)) {
-            if (latestDirection == 1) {
-                transform.localScale = new Vector3(-1, 1, 1);
-                clockFlipTransform.transform.localScale = new Vector3(-1, 1, 1);
+            if (latestDirectionX == 1) {
+                if (!Input.GetKey(KeyCode.RightArrow)) {
+                    transform.localScale = new Vector3(-1, 1, 1);
+                    clockFlipTransform.transform.localScale = new Vector3(-1, 1, 1);
+                    animator.SetTrigger("Flip");
+                    latestDirectionX = -1;
+                }
             }
-            latestDirection = -1;
         }
         if (Input.GetKey(KeyCode.RightArrow)) {
-            if (latestDirection == -1) {
-                transform.localScale = new Vector3(1, 1, 1);
-                clockFlipTransform.transform.localScale = new Vector3(1, 1, 1);
+            if (latestDirectionX == -1) {
+                if (!Input.GetKey(KeyCode.LeftArrow)) {
+                    transform.localScale = new Vector3(1, 1, 1);
+                    clockFlipTransform.transform.localScale = new Vector3(1, 1, 1);
+                    animator.SetTrigger("Flip");
+                    latestDirectionX = 1;
+                }
             }
-            latestDirection = 1;
         }
         
-        //animator.SetFloat("KeysDirectionX", KeysDirectionX = Mathf.SmoothDamp(KeysDirectionX, xDir, ref keysDirectionXSmoothing, 0.2f));
-        animator.SetFloat("KeysDirectionXAndFacing", KeysDirectionXAndFacing = Mathf.SmoothDamp(KeysDirectionXAndFacing, xDirAndFacing, ref keysDirectionXAndFacingSmoothing, 0.1f));
-        animator.SetFloat("KeysDirectionY", KeysDirectionY = Mathf.SmoothDamp(KeysDirectionY, yDir, ref keysDirectionYSmoothing, 0.2f));
-        if (KeysDirectionY < 0.1f) {
-            KeysDirectionY = 0;
-        }
+        animator.SetFloat("KeysDirectionXAndFacing", KeysDirectionXAndFacing = Mathf.SmoothDamp(KeysDirectionXAndFacing, xDirAndFacing, ref keysDirectionXAndFacingSmoothing, 0f));
+        animator.SetFloat("KeysDirectionY", KeysDirectionY = Mathf.SmoothDamp(KeysDirectionY, yDir, ref keysDirectionYSmoothing, 0f));
         
         //KeysDirectionXAndFacing = Mathf.Sign(velocity.y);
     }
@@ -90,8 +95,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.DownArrow)) {
             yDir = -1;
         }
+        if (Input.GetKeyUp(KeyCode.DownArrow)) {
+            yDir = 0;
+        }
         if (Input.GetKey(KeyCode.UpArrow)) {
             yDir = 1;
+        }
+        if (Input.GetKeyUp(KeyCode.UpArrow)) {
+            yDir = 0;
+
+            face.SetActive(true);
+            foreach(SpriteRenderer sr in clockSRs) {
+                sr.sortingOrder = sr.sortingOrder - 200;
+            }
+            latestDirectionY = -1;
         }
         if ((!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow)) || 
         (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow))) {
@@ -100,10 +117,18 @@ public class PlayerController : MonoBehaviour
     }
 
     void DirectionalFaceDisappearing() {
-        if (yDir == 1) {
+        if (yDir == 1 && latestDirectionY == -1) {
             face.SetActive(false);
-        } else {
+            foreach(SpriteRenderer sr in clockSRs) {
+                sr.sortingOrder = sr.sortingOrder + 200;
+            }
+            latestDirectionY = 1;
+        } else if (yDir == -1 && latestDirectionY == 1) {
             face.SetActive(true);
+            foreach(SpriteRenderer sr in clockSRs) {
+                sr.sortingOrder = sr.sortingOrder - 200;
+            }
+            latestDirectionY = -1;
         }
     }
 }
