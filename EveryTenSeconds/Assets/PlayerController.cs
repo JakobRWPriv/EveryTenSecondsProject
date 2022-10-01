@@ -21,8 +21,12 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     public GameObject face;
     public GameObject clockFlipTransform;
-
     public SpriteRenderer[] clockSRs;
+
+    public GameObject bubbleShot;
+    public Transform bubbleShotTransform;
+
+    public int bubbleDirection = 0;
 
     void Start()
     {
@@ -34,6 +38,7 @@ public class PlayerController : MonoBehaviour
         float targetVelocityX = 0;
         float targetVelocityY = 0;
 
+        Shoot();
         DirectionalFaceDisappearing();
         DetermineDirection();
         Vector2 input = new Vector2(xDir, yDir);
@@ -71,6 +76,16 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("KeysDirectionY", KeysDirectionY = Mathf.SmoothDamp(KeysDirectionY, yDir, ref keysDirectionYSmoothing, 0f));
         
         //KeysDirectionXAndFacing = Mathf.Sign(velocity.y);
+
+        DetermineBubbleDirection();
+    }
+
+    void Shoot() {
+        if (Input.GetKeyDown(KeyCode.Z)) {
+            BubbleShot bubble = Instantiate(bubbleShot, bubbleShotTransform.position, Quaternion.identity).GetComponent<BubbleShot>();
+            bubble.gameObject.SetActive(true);
+            bubble.Shoot(bubbleDirection);
+        }
     }
 
     void DetermineDirection() {
@@ -130,5 +145,25 @@ public class PlayerController : MonoBehaviour
             }
             latestDirectionY = -1;
         }
+    }
+
+    void DetermineBubbleDirection() {
+        if (xDir > 0 && yDir < 0) {
+            bubbleDirection = 1;
+        } else if (xDir < 0 && yDir < 0) {
+            bubbleDirection = 3;
+        } else if (xDir < 0 && yDir > 0) {
+            bubbleDirection = 5;
+        } else if (xDir > 0 && yDir > 0) {
+            bubbleDirection = 7;
+        } else if (xDir > 0) {
+            bubbleDirection = 0;
+        } else if (yDir < 0) {
+            bubbleDirection = 2;
+        } else if (xDir < 0) {
+            bubbleDirection = 4;
+        } else if (yDir > 0) {
+            bubbleDirection = 6;
+        } 
     }
 }
