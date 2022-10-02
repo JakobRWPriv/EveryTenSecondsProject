@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameHandler : MonoBehaviour
 {
@@ -55,6 +56,9 @@ public class GameHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape)) {
             Application.Quit();
         }
+        if (gameIsOver && Input.GetKeyDown(KeyCode.Space)) {
+            SceneManager.LoadScene(0);
+        }
 
         if (mission == Mission.DoNotTouch) {
 
@@ -102,11 +106,7 @@ public class GameHandler : MonoBehaviour
     void RandomizeMission() {
         float ran = Random.Range(0, 2f);
 
-        if (ran <= 1.5f) {
-            activeMissionIndex = Random.Range(0, 3);
-        } else {
-            activeMissionIndex = Random.Range(0, 2);
-        }
+        activeMissionIndex = Random.Range(0, 4);
 
         if (activeMissionIndex == 0) {
             activeMissionObject = Random.Range(0, 4);

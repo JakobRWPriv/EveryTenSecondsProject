@@ -9,6 +9,7 @@ public class StompCollider : MonoBehaviour
         if (otherCollider.tag == "Player" && otherCollider.isTrigger) {
             gameObject.SetActive(false);
             stomp.gameHandler.EndRoundFail();
+            stomp.player.TakeDamage();
         }
     }
 }

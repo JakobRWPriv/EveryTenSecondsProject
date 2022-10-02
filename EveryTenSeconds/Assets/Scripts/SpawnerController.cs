@@ -39,17 +39,21 @@ public class SpawnerController : MonoBehaviour
     }
 
     IEnumerator ForceRelevantSpawnCo(int index) {
+        print("FORCE SPAWN INDEX " + index);
         yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
 
         if (index != 8) {
-            int ran = Random.Range(0, 4);
+            int ran = Random.Range(0, 3);
 
             if (index < 4) {
                 sideSpawners[Random.Range(0, sideSpawners.Length)].Spawn(index, true);
-            } else if (ran == 1 || ran == 2) {
+                print("FORCE SPAWN 1");
+            } else if (ran == 0 || ran == 1) {
                 sideSpawners[Random.Range(0, sideSpawners.Length)].Spawn(index, true);
-            } else if (ran == 3) {
+                print("FORCE SPAWN 2");
+            } else if (ran == 2) {
                 upperSpawners[Random.Range(0, upperSpawners.Length)].Spawn(index, true);
+                print("FORCE SPAWN 3");
             }
         } else {
             yield return new WaitForSeconds(2.2f);

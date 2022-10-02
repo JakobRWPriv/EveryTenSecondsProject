@@ -12,13 +12,19 @@ public class Enemy : MissionObject
 
     public GameObject deathParticles;
 
+    public bool awayFromPlayer;
+
     void Start()
     {
         
     }
 
     void Update() {
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+        if (!awayFromPlayer) {
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+        } else {
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, -speed * Time.deltaTime);
+        }
 
         if (transform.localScale.x > 0 && player.transform.position.x < transform.position.x) {
             transform.localScale = new Vector3(-1.5f, 1.5f, 1);
@@ -41,7 +47,12 @@ public class Enemy : MissionObject
     public float rotateSpeed;
 
     void LookAtPlayer() {
-        Vector2 direction = (Vector2)player.transform.position - (Vector2)transform.position;
+        Vector2 direction;
+        if (!awayFromPlayer) {
+            direction = (Vector2)player.transform.position - (Vector2)transform.position;
+        } else {
+            direction = (Vector2)transform.position - (Vector2)player.transform.position;
+        }
         direction.Normalize();
         float angle = Mathf.Atan2(direction.y, direction.x) * (Mathf.Rad2Deg);
 
@@ -54,12 +65,14 @@ public class Enemy : MissionObject
 
     void OnTriggerEnter2D(Collider2D otherCollider) {
         if (otherCollider.tag == "Player") {
-            if (gameHandler.mission == GameHandler.Mission.Touch && gameHandler.missionIsActive) {
-                if (missionObjectIndex == gameHandler.activeMissionObject) {
-                    gameHandler.EndRoundWin();
-                    Instantiate(deathParticles, transform.position, Quaternion.identity);
-                    Destroy(gameObject);
-                }
+            if (gameHandler.mission == GameHandler.Mission.Touch && gameHandler.missionIsActive && missionObjectIndex == gameHandler.activeMissionObject && otherCollider.isTrigger) {
+                gameHandler.EndRoundWin();
+                Instantiate(deathParticles, transform.position, Quaternion.identity);
+                Destroy(gameObject);
+            } else if (!player.isInvincible && otherCollider.isTrigger) {
+                player.TakeDamage();
+                awayFromPlayer = true;
+                StartCoroutine(AwayFromPlayerCo());
             }
         }
 
@@ -75,5 +88,10 @@ public class Enemy : MissionObject
             Destroy(otherCollider.gameObject);
             Destroy(gameObject);
         }
+    }
+
+    IEnumerator AwayFromPlayerCo() {
+        yield return new WaitForSeconds(1.5f);
+        awayFromPlayer = false;
     }
 }

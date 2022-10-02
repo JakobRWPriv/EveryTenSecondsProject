@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public Transform bubbleShotTransform;
     bool canShoot = true;
     public bool canDash = true;
+    public bool isTakingDamage;
 
     public int bubbleDirection = 0;
 
@@ -36,7 +37,13 @@ public class PlayerController : MonoBehaviour
     public GameObject mouthOpen;
     public GameObject eyeBrowLeft, eyeBrowRight;
     public SpriteRenderer eyesNormalSR;
+    public GameObject eyesColor;
+    public GameObject pupilLeft, pupilRight;
     public GameObject eyeOuchLeft, eyeOuchRight;
+
+    public SpriteRenderer[] blinkSprites;
+    bool isBlinking;
+    public bool isInvincible;
 
     void Start()
     {
@@ -60,13 +67,20 @@ public class PlayerController : MonoBehaviour
             moveSpeedMultiplier = 1f;
         }
         
-        targetVelocityX = (input.x * (moveSpeed * moveSpeedMultiplier));
-        targetVelocityY = (input.y * (moveSpeed * moveSpeedMultiplier));
+        if (!isTakingDamage) {
+            targetVelocityX = (input.x * (moveSpeed * moveSpeedMultiplier));
+            targetVelocityY = (input.y * (moveSpeed * moveSpeedMultiplier));
+        } else {
+            targetVelocityX = 0;
+            targetVelocityY = 0;
+        }
 
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, accelerationTime);
         velocity.y = Mathf.SmoothDamp(velocity.y, targetVelocityY, ref velocityYSmoothing, accelerationTime);
 
-        transform.Translate(velocity * Time.deltaTime);
+        if (!isTakingDamage) {
+            transform.Translate(velocity * Time.deltaTime);
+        }
         
 
         if (Input.GetKey(KeyCode.LeftArrow)) {
@@ -99,6 +113,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void Shoot() {
+        if (isTakingDamage) return;
         if (Input.GetKeyDown(KeyCode.Z) && canShoot) {
             BubbleShot bubble = Instantiate(bubbleShot, bubbleShotTransform.position, Quaternion.identity).GetComponent<BubbleShot>();
             bubble.gameObject.SetActive(true);
@@ -109,6 +124,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void DetermineDirection() {
+        if (isTakingDamage) return;
         if (Input.GetKey(KeyCode.LeftArrow)) {
             xDir = -1;
             xDirAndFacing = 1;
@@ -202,6 +218,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void Dash() {
+        if (isTakingDamage) return;
         if (Input.GetKeyDown(KeyCode.X) && canDash) {
             StartCoroutine(DashCo());
             canDash = false;
@@ -219,11 +236,18 @@ public class PlayerController : MonoBehaviour
     }
 
     public void TakeDamage() {
-
+        isInvincible = true;
+        isTakingDamage = true;
+        StartCoroutine(TakeDamageCo());
     }
 
     IEnumerator TakeDamageCo() {
         mouthNormalSR.enabled = false;
+        eyesNormalSR.enabled = false;
+        eyesColor.SetActive(false);
+        pupilLeft.SetActive(false);
+        pupilRight.SetActive(false);
+        mouthOpen.SetActive(true);
         mouthOpen.SetActive(true);
         eyeBrowLeft.SetActive(true);
         eyeBrowRight.SetActive(true);
@@ -231,10 +255,45 @@ public class PlayerController : MonoBehaviour
         eyeOuchRight.SetActive(true);
         yield return new WaitForSeconds(1f);
         mouthNormalSR.enabled = true;
+        eyesNormalSR.enabled = true;
+        eyesColor.SetActive(true);
+        pupilLeft.SetActive(true);
+        pupilRight.SetActive(true);
         mouthOpen.SetActive(false);
         eyeBrowLeft.SetActive(false);
         eyeBrowRight.SetActive(false);
         eyeOuchLeft.SetActive(false);
         eyeOuchRight.SetActive(false);
+        isTakingDamage = false;
+        
+        isBlinking = true;
+        SpriteBlink();
+
+        yield return new WaitForSeconds(1.5f);
+
+        isBlinking = false;
+        isInvincible = false;
+    }
+
+    public void SpriteBlink() {
+        StartCoroutine(SpriteBlinkCo());
+    }
+
+    public IEnumerator SpriteBlinkCo() {
+        foreach(SpriteRenderer sr in blinkSprites) {
+            sr.enabled = false;
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        foreach(SpriteRenderer sr in blinkSprites) {
+            sr.enabled = true;
+        }
+
+        yield return new WaitForSeconds(0.15f);
+
+        if (isBlinking) {
+            StartCoroutine(SpriteBlinkCo());
+        }
     }
 }

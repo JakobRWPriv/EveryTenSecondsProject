@@ -42,7 +42,6 @@ public class Butterfly : MissionObject
     public void HitPlayer() {
         if (!gameHandler.missionIsActive) return;
         
-        print("HAS HIT PLAYER");
         if (gameHandler.mission == GameHandler.Mission.DoNotTouch) {
             if (missionObjectIndex == gameHandler.activeMissionObject) {
                 gameHandler.EndRoundFail();

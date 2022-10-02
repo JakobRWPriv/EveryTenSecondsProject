@@ -45,11 +45,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Player
-    uniqueID: 3224573555
-    locked: 0
   - name: Creature
     uniqueID: 2793302807
+    locked: 0
+  - name: Player
+    uniqueID: 3224573555
     locked: 0
   - name: Stomp
     uniqueID: 2193545919
