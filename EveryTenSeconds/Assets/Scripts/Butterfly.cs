@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Butterfly : MonoBehaviour
+public class Butterfly : MissionObject
 {
     public float xSpeed;
     public float ySpeed;
@@ -15,7 +15,12 @@ public class Butterfly : MonoBehaviour
     public GameObject upDownObj;
 
     void Start() {
-        xSpeed = Random.Range(2.5f, 4f);
+        if (transform.position.x > 0) {
+            xSpeed = Random.Range(-4f, -2.5f);
+            transform.localScale = new Vector3(1, 1, 1);
+        } else {
+            xSpeed = Random.Range(2.5f, 4f);
+        }
 
         if (transform.position.y > 0) {
             ySpeed = Random.Range(-2f, 0f);

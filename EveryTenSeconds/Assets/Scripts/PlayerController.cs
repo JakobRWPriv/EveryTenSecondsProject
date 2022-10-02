@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameHandler gameHandler;
     public Vector3 velocity;
     float velocityXSmoothing;
     float velocityYSmoothing;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public GameObject bubbleShot;
     public Transform bubbleShotTransform;
     bool canShoot = true;
+    public bool canDash = true;
 
     public int bubbleDirection = 0;
 
@@ -198,8 +200,11 @@ public class PlayerController : MonoBehaviour
     }
 
     void Dash() {
-        if (Input.GetKeyDown(KeyCode.X)) {
+        if (Input.GetKeyDown(KeyCode.X) && canDash) {
             StartCoroutine(DashCo());
+            canDash = false;
+            gameHandler.dashActive.SetActive(false);
+            gameHandler.dashInactive.SetActive(true);
         }
     }
 
@@ -209,5 +214,11 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         accelerationTime = 0.2f;
         moveSpeed = 6f;
+    }
+
+    void OnTriggerEnter2D(Collider2D otherCollider) {
+        if (otherCollider.tag == "MissionObject") {
+            print("HIT");
+        }
     }
 }
