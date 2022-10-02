@@ -9,16 +9,13 @@ public class SpawnerController : MonoBehaviour
     public Spawner[] sideSpawners;
     public Spawner[] upperSpawners;
 
-    void Start() {
-        Spawn();
-    }
-
     public void Spawn() {
         StartCoroutine(SpawnCo(Random.Range(1f, 1.5f)));
-        
     }
 
     IEnumerator SpawnCo(float waitTime) {
+        if (gameHandler.gameIsOver) yield break;
+
         yield return new WaitForSeconds(waitTime);
 
         int objIndex = Random.Range(0, missionObjects.Length - 1);

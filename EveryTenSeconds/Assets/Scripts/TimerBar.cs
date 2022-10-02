@@ -59,6 +59,10 @@ public class TimerBar : MonoBehaviour
         }
     }
 
+    public void RemoveCountDownText() {
+        threeSecCountdown.text = "";
+    }
+
     public void UpdateBarFill() {
         energyBar.sizeDelta = new Vector2(remainingTime * (787 / 10), energyBar.sizeDelta.y);
     }

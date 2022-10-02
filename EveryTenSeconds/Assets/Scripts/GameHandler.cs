@@ -6,8 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class GameHandler : MonoBehaviour
 {
+    public bool hasStartedGame;
+    public bool hasStartedStartGameCo;
     public int roundsPassed;
     public TextMeshProUGUI roundsPassedText;
+    public TextMeshProUGUI inGameHighscoreText;
     public int activeMissionIndex;
     public int previousActiveMissionIndex;
     public int activeMissionObject;
@@ -15,6 +18,7 @@ public class GameHandler : MonoBehaviour
     public bool gameIsOver;
     public TimerBar timerBar;
     public PlayerController player;
+    public PlayerClockSecondHand playerClockHand;
     public SpawnerController spawnerController;
     public GameObject dashActive;
     public GameObject dashInactive;
@@ -45,16 +49,30 @@ public class GameHandler : MonoBehaviour
     public GameObject life1, life2, life3;
     public GameObject life1Gone, life2Gone, life3Gone;
 
+    public GameObject startScreen;
     public GameObject gameOverScreen;
     public TextMeshProUGUI roundsLastedText;
     public TextMeshProUGUI highScoreText;
 
     void Start() {
-        StartRound();
+        inGameHighscoreText.text = "HIGHSCORE: " + PlayerPrefs.GetInt("ROUNDS_HIGHSCORE", 0);
     }
 
+    IEnumerator StartGameCo() {
+        yield return new WaitForSeconds(1f);
+        hasStartedGame = true;
+        StartRound();
+        spawnerController.Spawn();
+        startScreen.SetActive(false);
+    }
 
     void Update() {
+        if (Input.GetKeyDown(KeyCode.Z) && !hasStartedStartGameCo) {
+            LeanTween.scaleY(startScreen, 0, 0.6f).setEaseInCubic();
+            hasStartedStartGameCo = true;
+            StartCoroutine(StartGameCo());
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape)) {
             Application.Quit();
         }
@@ -91,12 +109,13 @@ public class GameHandler : MonoBehaviour
         yield return new WaitForSeconds(0.66f);
         startRoundCountdown.text = "2";
         AudioHandler.Instance.PlaySound(AudioHandler.Instance.Countdown, 0.1f, 2.5f);
-        yield return new WaitForSeconds(0.66f);
+        yield return new WaitForSeconds(0.67f);
         startRoundCountdown.text = "1";
         AudioHandler.Instance.PlaySound(AudioHandler.Instance.Countdown, 0.1f, 2.5f);
-        yield return new WaitForSeconds(0.66f);
+        yield return new WaitForSeconds(0.67f);
         startRoundCountdown.text = "GO!";
         AudioHandler.Instance.PlaySound(AudioHandler.Instance.Countdown, 0.1f, 5f);
+        playerClockHand.StartClock();
 
         ActivateRelevantMissionText();
         getReadyText.SetActive(false);
@@ -140,10 +159,12 @@ public class GameHandler : MonoBehaviour
     }
 
     public void EndRoundFail() {
+        playerClockHand.StopClock();
         timerBar.InactivateSounds();
         missionIsActive = false;
         StartCoroutine(WaitToStartNewRound());
         timerBar.SetBarFillToEmpty();
+        timerBar.RemoveCountDownText();
 
         roundsPassed++;
         roundsPassedText.text = "ROUNDS PASSED: " + roundsPassed;
@@ -181,6 +202,8 @@ public class GameHandler : MonoBehaviour
     }
 
     public void EndRoundWin() {
+        playerClockHand.StopClock();
+        timerBar.RemoveCountDownText();
         timerBar.InactivateSounds();
         missionIsActive = false;
         roundsPassed++;
@@ -239,6 +262,6 @@ public class GameHandler : MonoBehaviour
 
         roundsLastedText.text = roundsPassed + " ROUNDS";
 
-        LeanTween.scaleY(gameOverScreen, 1, 0.6f).setEaseOutCubic();
+        LeanTween.scaleY(gameOverScreen, 1.15f, 0.6f).setEaseOutCubic();
     }
 }

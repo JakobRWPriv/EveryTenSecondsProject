@@ -41,8 +41,8 @@ public class Stomp : MissionObject
 
     IEnumerator StompCo() {
         transform.position = player.transform.position + playerFollowVector;
-        if (transform.position.y < -4.2f) {
-            transform.position = new Vector3(transform.position.x, -4.2f, 1);
+        if (transform.position.y < -5.28f) {
+            transform.position = new Vector3(transform.position.x, -5.28f, 1);
         }
         animator.SetTrigger("Stomp");
         yield return new WaitForSeconds(2.1f);
@@ -52,8 +52,8 @@ public class Stomp : MissionObject
         animator.ResetTrigger("Stomp");
         yield return new WaitForSeconds(Random.Range(0.4f, 1f));
         transform.position = player.transform.position + playerFollowVector;
-        if (transform.position.y < -4.2f) {
-            transform.position = new Vector3(transform.position.x, -4.2f, 1);
+        if (transform.position.y < -5.28f) {
+            transform.position = new Vector3(transform.position.x, -5.28f, 1);
         }
         animator.SetTrigger("Stomp");
         yield return new WaitForSeconds(2.1f);
@@ -63,8 +63,8 @@ public class Stomp : MissionObject
         animator.ResetTrigger("Stomp");
         yield return new WaitForSeconds(Random.Range(0.4f, 1f));
         transform.position = player.transform.position + playerFollowVector;
-        if (transform.position.y < -4.2f) {
-            transform.position = new Vector3(transform.position.x, -4.2f, 1);
+        if (transform.position.y < -5.28f) {
+            transform.position = new Vector3(transform.position.x, -5.28f, 1);
         }
         animator.SetTrigger("Stomp");
         yield return new WaitForSeconds(2.1f);

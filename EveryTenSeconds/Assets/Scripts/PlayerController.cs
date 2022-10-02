@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
 
     void Shoot() {
         if (isTakingDamage) return;
-        if (Input.GetKeyDown(KeyCode.Z) && canShoot) {
+        if ((Input.GetKeyDown(KeyCode.Z) || (Input.GetKeyDown(KeyCode.Y))) && canShoot) {
             AudioHandler.Instance.PlaySound(AudioHandler.Instance.Spit, 2f, Random.Range(1f, 1.4f));
             BubbleShot bubble = Instantiate(bubbleShot, bubbleShotTransform.position, Quaternion.identity).GetComponent<BubbleShot>();
             bubble.gameObject.SetActive(true);
