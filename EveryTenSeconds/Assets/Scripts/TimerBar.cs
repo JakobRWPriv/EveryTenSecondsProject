@@ -56,4 +56,9 @@ public class TimerBar : MonoBehaviour
         energyBar.sizeDelta = new Vector2(787, energyBar.sizeDelta.y);
         barImage.color = barGreen;
     }
+
+    public void SetBarFillToEmpty() {
+        energyBar.sizeDelta = new Vector2(0, energyBar.sizeDelta.y);
+        remainingTime = 0;
+    }
 }

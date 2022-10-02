@@ -16,7 +16,7 @@ TagManager:
   - UI
   - OuterWall
   - BubbleShot
-  - 
+  - IgnoreOuterWall
   - 
   - 
   - 
@@ -49,6 +49,9 @@ TagManager:
     locked: 0
   - name: Creature
     uniqueID: 2793302807
+    locked: 0
+  - name: Effects
+    uniqueID: 1854935221
     locked: 0
   - name: UI
     uniqueID: 146567505

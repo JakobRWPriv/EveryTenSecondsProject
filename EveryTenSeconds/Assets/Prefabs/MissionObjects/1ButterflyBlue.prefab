@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108444868651626}
   - component: {fileID: 2967108444868651625}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BodyColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108444961687769}
   - component: {fileID: 2967108444961687768}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightWingColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108445002244447}
   - component: {fileID: 2967108445002244446}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftWing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108445028678112}
   - component: {fileID: 2967108445028678119}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightWingFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108445159946721}
   - component: {fileID: 2967108445159946720}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,7 +427,7 @@ GameObject:
   - component: {fileID: 2967108445253333598}
   - component: {fileID: 2967108445253333596}
   - component: {fileID: 2967108445253333597}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ButterflyTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5239,7 +5239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108445310166791}
   - component: {fileID: 2967108445310166790}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightWing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5322,7 +5322,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108445414068050}
   - component: {fileID: 2967108445414068049}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 1ButterflyBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5374,7 +5374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108445633759793}
   - component: {fileID: 2967108445633759792}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Animator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5425,7 +5425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108446108248267}
   - component: {fileID: 2967108446108248266}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightWingColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5507,7 +5507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108446126885313}
   - component: {fileID: 2967108446126885312}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftWingColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5588,7 +5588,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2967108446660857124}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ScriptTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5620,7 +5620,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108446742741951}
   - component: {fileID: 2967108446742741950}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: UpDownTransform
   m_TagString: MissionObject
   m_Icon: {fileID: 0}
