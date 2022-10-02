@@ -13,6 +13,8 @@ public class Butterfly : MissionObject
     public GameObject upDownObj;
 
     void Start() {
+        StartCoroutine(DestroyCo());
+        StartCoroutine(SortingOrderAdd());
         if (transform.position.x > 0) {
             xSpeed = Random.Range(-4f, -2.5f);
             transform.localScale = new Vector3(1, 1, 1);
@@ -31,6 +33,12 @@ public class Butterfly : MissionObject
         yMoveTime = Random.Range(0.8f, 1f);
 
         LeanTween.moveLocalY(upDownObj, yMoveDistance, yMoveTime).setLoopPingPong().setEaseInOutCubic();
+    }
+    IEnumerator SortingOrderAdd() {
+        yield return new WaitForSeconds(0.2f);
+        foreach(SpriteRenderer sr in allSprites) {
+            sr.sortingOrder = sr.sortingOrder + gameHandler.globalCreatureSortingOrderAddition;
+        }
     }
 
     void Update() {
@@ -51,5 +59,10 @@ public class Butterfly : MissionObject
                 gameHandler.EndRoundWin();
             }
         }
+    }
+
+    IEnumerator DestroyCo() {
+        yield return new WaitForSeconds(30);
+        Destroy(gameObject);
     }
 }

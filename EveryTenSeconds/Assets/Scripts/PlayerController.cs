@@ -115,6 +115,7 @@ public class PlayerController : MonoBehaviour
     void Shoot() {
         if (isTakingDamage) return;
         if (Input.GetKeyDown(KeyCode.Z) && canShoot) {
+            AudioHandler.Instance.PlaySound(AudioHandler.Instance.Spit, 2f, Random.Range(1f, 1.4f));
             BubbleShot bubble = Instantiate(bubbleShot, bubbleShotTransform.position, Quaternion.identity).GetComponent<BubbleShot>();
             bubble.gameObject.SetActive(true);
             bubble.Shoot(bubbleDirection);
@@ -224,6 +225,7 @@ public class PlayerController : MonoBehaviour
             canDash = false;
             gameHandler.dashActive.SetActive(false);
             gameHandler.dashInactive.SetActive(true);
+            AudioHandler.Instance.PlaySound(AudioHandler.Instance.Dash, 1, Random.Range(1f, 1.2f));
         }
     }
 
@@ -236,6 +238,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public void TakeDamage() {
+        animator.SetTrigger("Hurt");
         isInvincible = true;
         isTakingDamage = true;
         StartCoroutine(TakeDamageCo());
@@ -266,6 +269,7 @@ public class PlayerController : MonoBehaviour
         eyeOuchRight.SetActive(false);
         isTakingDamage = false;
         
+        animator.ResetTrigger("Hurt");
         isBlinking = true;
         SpriteBlink();
 

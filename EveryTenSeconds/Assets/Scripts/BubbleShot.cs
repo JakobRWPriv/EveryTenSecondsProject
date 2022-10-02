@@ -40,7 +40,9 @@ public class BubbleShot : MonoBehaviour
     }
 
     IEnumerator DestroyCo() {
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(0.6f);
+        AudioHandler.Instance.PlaySound(AudioHandler.Instance.BubbleBurst, 0.5f, Random.Range(1f, 1.3f));
+        yield return new WaitForSeconds(0.2f);
         Destroy(gameObject);
     }
 }

@@ -10,6 +10,10 @@ public class Spawner : MonoBehaviour
 
     public void Spawn(int objIndex, bool isForcedSpawn) {
         GameObject go = Instantiate(spawnerController.missionObjects[objIndex], transform.position, Quaternion.identity);
+        gameHandler.globalCreatureSortingOrderAddition += 100;
+        if (gameHandler.globalCreatureSortingOrderAddition > 10000) {
+            gameHandler.globalCreatureSortingOrderAddition = 0;
+        }
 
         MissionObject mo = go.GetComponent<MissionObject>();
         mo.player = player;

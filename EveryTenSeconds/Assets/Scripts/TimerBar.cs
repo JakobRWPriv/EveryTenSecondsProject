@@ -13,6 +13,7 @@ public class TimerBar : MonoBehaviour
     public Image barImage;
     public Color barGreen, barYellow, barRed;
     public TextMeshProUGUI threeSecCountdown;
+    public GameObject sound1, sound2, sound3;
 
     void Start()
     {
@@ -37,10 +38,13 @@ public class TimerBar : MonoBehaviour
             threeSecCountdown.text = "";
         } else if (remainingTime <= 3 && remainingTime > 2) {
             threeSecCountdown.text = "3";
+            sound1.SetActive(true);
         } else if (remainingTime <= 2 && remainingTime > 1) {
             threeSecCountdown.text = "2";
+            sound2.SetActive(true);
         } else if (remainingTime <= 1 && remainingTime > 0) {
             threeSecCountdown.text = "1";
+            sound3.SetActive(true);
         } else if (remainingTime <= 0) {
             threeSecCountdown.text = "";
 
@@ -67,5 +71,11 @@ public class TimerBar : MonoBehaviour
     public void SetBarFillToEmpty() {
         energyBar.sizeDelta = new Vector2(0, energyBar.sizeDelta.y);
         remainingTime = 0;
+    }
+
+    public void InactivateSounds() {
+        sound1.SetActive(false);
+        sound2.SetActive(false);
+        sound3.SetActive(false);
     }
 }

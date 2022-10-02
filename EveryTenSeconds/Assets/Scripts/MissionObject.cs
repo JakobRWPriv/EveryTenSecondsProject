@@ -9,4 +9,6 @@ public class MissionObject : MonoBehaviour
     public string objectColor;
     public PlayerController player;
     public GameHandler gameHandler;
+
+    public SpriteRenderer[] allSprites;
 }

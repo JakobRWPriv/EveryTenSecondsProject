@@ -14,9 +14,15 @@ public class Enemy : MissionObject
 
     public bool awayFromPlayer;
 
-    void Start()
-    {
-        
+    void Start() {
+        StartCoroutine(SortingOrderAdd());
+        StartCoroutine(RandomGruntCo());
+    }
+    IEnumerator SortingOrderAdd() {
+        yield return new WaitForSeconds(0.2f);
+        foreach(SpriteRenderer sr in allSprites) {
+            sr.sortingOrder = sr.sortingOrder + gameHandler.globalCreatureSortingOrderAddition;
+        }
     }
 
     void Update() {
@@ -69,8 +75,12 @@ public class Enemy : MissionObject
                 gameHandler.EndRoundWin();
                 Instantiate(deathParticles, transform.position, Quaternion.identity);
                 Destroy(gameObject);
-            } else if (!player.isInvincible && otherCollider.isTrigger) {
-                player.TakeDamage();
+                AudioHandler.Instance.PlaySound(AudioHandler.Instance.EnemyDie, 0.7f, Random.Range(0.9f, 1.2f));
+            } else if (otherCollider.isTrigger) {
+                if (!player.isInvincible) {
+                    player.TakeDamage();
+                    AudioHandler.Instance.PlaySound(AudioHandler.Instance.PlayerHurt, 0.7f, Random.Range(0.9f, 1.2f));
+                }
                 awayFromPlayer = true;
                 StartCoroutine(AwayFromPlayerCo());
             }
@@ -84,8 +94,15 @@ public class Enemy : MissionObject
                 }
             }
 
+            AudioHandler.Instance.PlaySound(AudioHandler.Instance.EnemyDie, 0.7f, Random.Range(0.9f, 1.2f));
             Instantiate(deathParticles, transform.position, Quaternion.identity);
             Destroy(otherCollider.gameObject);
+            Destroy(gameObject);
+        }
+
+        if (otherCollider.tag == "Stomp") {
+            AudioHandler.Instance.PlaySound(AudioHandler.Instance.EnemyDie, 0.7f, Random.Range(0.9f, 1.2f));
+            Instantiate(deathParticles, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
@@ -93,5 +110,14 @@ public class Enemy : MissionObject
     IEnumerator AwayFromPlayerCo() {
         yield return new WaitForSeconds(1.5f);
         awayFromPlayer = false;
+    }
+
+    IEnumerator RandomGruntCo() {
+        yield return new WaitForSeconds(Random.Range(1f, 5f));
+        int ran = Random.Range(0, 3);
+        if (ran == 0) {
+            AudioHandler.Instance.PlaySound(AudioHandler.Instance.EnemyGrunt, 1, Random.Range(0.7f, 1f));
+        }
+        StartCoroutine(RandomGruntCo());
     }
 }

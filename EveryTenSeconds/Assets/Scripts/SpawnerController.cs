@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
 {
+    public GameHandler gameHandler;
     public GameObject[] missionObjects;
     public Spawner[] sideSpawners;
     public Spawner[] upperSpawners;
@@ -14,6 +15,7 @@ public class SpawnerController : MonoBehaviour
 
     public void Spawn() {
         StartCoroutine(SpawnCo(Random.Range(1f, 1.5f)));
+        
     }
 
     IEnumerator SpawnCo(float waitTime) {
@@ -31,7 +33,19 @@ public class SpawnerController : MonoBehaviour
             upperSpawners[Random.Range(0, upperSpawners.Length)].Spawn(objIndex, false);
         }
 
-        StartCoroutine(SpawnCo(Random.Range(1f, 1.5f)));
+        if (gameHandler.roundsPassed < 5) {
+            StartCoroutine(SpawnCo(Random.Range(1f, 1.5f)));
+        } else if (gameHandler.roundsPassed > 4 && gameHandler.roundsPassed < 10) {
+            StartCoroutine(SpawnCo(Random.Range(0.8f, 1.3f)));
+        } else if (gameHandler.roundsPassed > 9 && gameHandler.roundsPassed < 15) {
+            StartCoroutine(SpawnCo(Random.Range(0.6f, 1.1f)));
+        } else if (gameHandler.roundsPassed > 14 && gameHandler.roundsPassed < 20) {
+            StartCoroutine(SpawnCo(Random.Range(0.4f, 0.9f)));
+        } else if (gameHandler.roundsPassed > 19 && gameHandler.roundsPassed < 25) {
+            StartCoroutine(SpawnCo(Random.Range(0.2f, 0.9f)));
+        } else if (gameHandler.roundsPassed > 24) {
+            StartCoroutine(SpawnCo(Random.Range(0.2f, 0.7f)));
+        }
     }
 
     public void ForceRelevantSpawn(int index) {

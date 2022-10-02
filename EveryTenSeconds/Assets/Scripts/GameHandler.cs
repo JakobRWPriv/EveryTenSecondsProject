@@ -9,6 +9,7 @@ public class GameHandler : MonoBehaviour
     public int roundsPassed;
     public TextMeshProUGUI roundsPassedText;
     public int activeMissionIndex;
+    public int previousActiveMissionIndex;
     public int activeMissionObject;
     public bool missionIsActive;
     public bool gameIsOver;
@@ -18,6 +19,7 @@ public class GameHandler : MonoBehaviour
     public GameObject dashActive;
     public GameObject dashInactive;
     public bool stompIsActive;
+    public int globalCreatureSortingOrderAddition;
 
     public enum Mission {
         DoNotTouch, Touch, Defeat, WatchOut
@@ -85,12 +87,16 @@ public class GameHandler : MonoBehaviour
 
         startRoundCountdown.gameObject.SetActive(true);
         startRoundCountdown.text = "3";
+        AudioHandler.Instance.PlaySound(AudioHandler.Instance.Countdown, 0.1f, 2.5f);
         yield return new WaitForSeconds(0.66f);
         startRoundCountdown.text = "2";
+        AudioHandler.Instance.PlaySound(AudioHandler.Instance.Countdown, 0.1f, 2.5f);
         yield return new WaitForSeconds(0.66f);
         startRoundCountdown.text = "1";
+        AudioHandler.Instance.PlaySound(AudioHandler.Instance.Countdown, 0.1f, 2.5f);
         yield return new WaitForSeconds(0.66f);
         startRoundCountdown.text = "GO!";
+        AudioHandler.Instance.PlaySound(AudioHandler.Instance.Countdown, 0.1f, 5f);
 
         ActivateRelevantMissionText();
         getReadyText.SetActive(false);
@@ -107,6 +113,15 @@ public class GameHandler : MonoBehaviour
         float ran = Random.Range(0, 2f);
 
         activeMissionIndex = Random.Range(0, 4);
+        if (activeMissionIndex == previousActiveMissionIndex) {
+            if (activeMissionIndex < 3) {
+                activeMissionIndex++;
+            } else {
+                activeMissionIndex = 0;
+            }
+            print("SAME AS PREVIOUS");
+        }
+        previousActiveMissionIndex = activeMissionIndex;
 
         if (activeMissionIndex == 0) {
             activeMissionObject = Random.Range(0, 4);
@@ -125,6 +140,7 @@ public class GameHandler : MonoBehaviour
     }
 
     public void EndRoundFail() {
+        timerBar.InactivateSounds();
         missionIsActive = false;
         StartCoroutine(WaitToStartNewRound());
         timerBar.SetBarFillToEmpty();
@@ -165,6 +181,7 @@ public class GameHandler : MonoBehaviour
     }
 
     public void EndRoundWin() {
+        timerBar.InactivateSounds();
         missionIsActive = false;
         roundsPassed++;
         roundsPassedText.text = "ROUNDS PASSED: " + roundsPassed;
