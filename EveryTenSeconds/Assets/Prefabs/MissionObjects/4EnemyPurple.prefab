@@ -46,9 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0320f61ef4d853e4ba2487783071728c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missionObjectIndex: 4
   objectName: EnemyPurple
   objectColor: Purple
   player: {fileID: 0}
+  gameHandler: {fileID: 0}
   speed: 3
   facePivot: {fileID: 4977215848447448399}
   faceObj: {fileID: 4977215848156422013}

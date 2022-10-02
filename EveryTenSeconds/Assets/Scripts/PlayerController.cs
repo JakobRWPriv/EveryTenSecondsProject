@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
     public SpriteRenderer mouthNormalSR;
     public GameObject mouthOpen;
     public GameObject eyeBrowLeft, eyeBrowRight;
+    public SpriteRenderer eyesNormalSR;
+    public GameObject eyeOuchLeft, eyeOuchRight;
 
     void Start()
     {
@@ -216,9 +218,23 @@ public class PlayerController : MonoBehaviour
         moveSpeed = 6f;
     }
 
-    void OnTriggerEnter2D(Collider2D otherCollider) {
-        if (otherCollider.tag == "MissionObject") {
-            print("HIT");
-        }
+    public void TakeDamage() {
+
+    }
+
+    IEnumerator TakeDamageCo() {
+        mouthNormalSR.enabled = false;
+        mouthOpen.SetActive(true);
+        eyeBrowLeft.SetActive(true);
+        eyeBrowRight.SetActive(true);
+        eyeOuchLeft.SetActive(true);
+        eyeOuchRight.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        mouthNormalSR.enabled = true;
+        mouthOpen.SetActive(false);
+        eyeBrowLeft.SetActive(false);
+        eyeBrowRight.SetActive(false);
+        eyeOuchLeft.SetActive(false);
+        eyeOuchRight.SetActive(false);
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Enemy : MissionObject
 {
-    public PlayerController player;
     public float speed;
 
     public GameObject facePivot;
@@ -54,7 +53,24 @@ public class Enemy : MissionObject
     }
 
     void OnTriggerEnter2D(Collider2D otherCollider) {
+        if (otherCollider.tag == "Player") {
+            if (gameHandler.mission == GameHandler.Mission.Touch && gameHandler.missionIsActive) {
+                if (missionObjectIndex == gameHandler.activeMissionObject) {
+                    gameHandler.EndRoundWin();
+                    Instantiate(deathParticles, transform.position, Quaternion.identity);
+                    Destroy(gameObject);
+                }
+            }
+        }
+
         if (otherCollider.tag == "BubbleShot") {
+
+            if (gameHandler.mission == GameHandler.Mission.Defeat && gameHandler.missionIsActive) {
+                if (missionObjectIndex == gameHandler.activeMissionObject) {
+                    gameHandler.EndRoundWin();
+                }
+            }
+
             Instantiate(deathParticles, transform.position, Quaternion.identity);
             Destroy(otherCollider.gameObject);
             Destroy(gameObject);

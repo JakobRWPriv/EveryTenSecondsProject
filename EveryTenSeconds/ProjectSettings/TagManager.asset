@@ -7,6 +7,7 @@ TagManager:
   - MissionObject
   - Enemy
   - BubbleShot
+  - Stomp
   layers:
   - Default
   - TransparentFX
@@ -49,6 +50,9 @@ TagManager:
     locked: 0
   - name: Creature
     uniqueID: 2793302807
+    locked: 0
+  - name: Stomp
+    uniqueID: 2193545919
     locked: 0
   - name: Effects
     uniqueID: 1854935221

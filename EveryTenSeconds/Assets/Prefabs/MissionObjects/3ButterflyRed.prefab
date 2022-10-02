@@ -5328,7 +5328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2967108445414068050
 Transform:
   m_ObjectHideFlags: 0
@@ -5356,13 +5356,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea7b40801831f5b40ad30cffe7767da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missionObjectIndex: 3
   objectName: ButterflyPurple
   objectColor: Purple
+  player: {fileID: 0}
+  gameHandler: {fileID: 0}
   xSpeed: 0
   ySpeed: 0
   yMoveDistance: 0
   yMoveTime: 0
-  butterFlyColor: 
   upDownObj: {fileID: 2967108446742741944}
 --- !u!1 &2967108445633759794
 GameObject:
@@ -5620,6 +5622,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2967108446742741951}
   - component: {fileID: 2967108446742741950}
+  - component: {fileID: 394773405915619676}
   m_Layer: 8
   m_Name: UpDownTransform
   m_TagString: MissionObject
@@ -5659,3 +5662,16 @@ CircleCollider2D:
   m_Offset: {x: 0.05, y: -0.01}
   serializedVersion: 2
   m_Radius: 0.33
+--- !u!114 &394773405915619676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2967108446742741944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0acc006f00130642911cb63ebf9e961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  butterfly: {fileID: 2967108445414068049}

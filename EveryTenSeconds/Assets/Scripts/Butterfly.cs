@@ -10,8 +10,6 @@ public class Butterfly : MissionObject
     public float yMoveDistance;
     public float yMoveTime;
 
-    public string butterFlyColor;
-
     public GameObject upDownObj;
 
     void Start() {
@@ -39,5 +37,20 @@ public class Butterfly : MissionObject
         Vector2 speed = new Vector2(xSpeed, ySpeed);
 
         transform.Translate(speed * Time.deltaTime);
+    }
+
+    public void HitPlayer() {
+        if (!gameHandler.missionIsActive) return;
+        
+        print("HAS HIT PLAYER");
+        if (gameHandler.mission == GameHandler.Mission.DoNotTouch) {
+            if (missionObjectIndex == gameHandler.activeMissionObject) {
+                gameHandler.EndRoundFail();
+            }
+        } else if (gameHandler.mission == GameHandler.Mission.Touch) {
+            if (missionObjectIndex == gameHandler.activeMissionObject) {
+                gameHandler.EndRoundWin();
+            }
+        }
     }
 }

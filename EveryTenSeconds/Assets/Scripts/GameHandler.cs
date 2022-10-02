@@ -13,11 +13,13 @@ public class GameHandler : MonoBehaviour
     public bool gameIsOver;
     public TimerBar timerBar;
     public PlayerController player;
+    public SpawnerController spawnerController;
     public GameObject dashActive;
     public GameObject dashInactive;
+    public bool stompIsActive;
 
     public enum Mission {
-        DoNotTouch, Touch, Defeat
+        DoNotTouch, Touch, Defeat, WatchOut
     };
     public Mission mission;
 
@@ -34,6 +36,7 @@ public class GameHandler : MonoBehaviour
     public GameObject doNotTouchText;
     public GameObject touchText;
     public GameObject defeatText;
+    public GameObject watchOutText;
 
     public int lives = 3;
     public GameObject life1, life2, life3;
@@ -49,6 +52,10 @@ public class GameHandler : MonoBehaviour
 
 
     void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            Application.Quit();
+        }
+
         if (mission == Mission.DoNotTouch) {
 
         }
@@ -66,7 +73,11 @@ public class GameHandler : MonoBehaviour
         InactivateAllMissionImages();
 
         RandomizeMission();
+
         ActivateRelevantMissionImage();
+
+        timerBar.SetBarFillToFull();
+        timerBar.remainingTime = 10;
 
         startRoundCountdown.gameObject.SetActive(true);
         startRoundCountdown.text = "3";
@@ -79,8 +90,6 @@ public class GameHandler : MonoBehaviour
 
         ActivateRelevantMissionText();
         getReadyText.SetActive(false);
-        timerBar.SetBarFillToFull();
-        timerBar.remainingTime = 10;
         missionIsActive = true;
         player.canDash = true;
         dashActive.SetActive(true);
@@ -91,7 +100,27 @@ public class GameHandler : MonoBehaviour
     }
 
     void RandomizeMission() {
-        activeMissionIndex = Random.Range(0, 3);
+        float ran = Random.Range(0, 2f);
+
+        if (ran <= 1.5f) {
+            activeMissionIndex = Random.Range(0, 3);
+        } else {
+            activeMissionIndex = Random.Range(0, 2);
+        }
+
+        if (activeMissionIndex == 0) {
+            activeMissionObject = Random.Range(0, 4);
+        } else if (activeMissionIndex == 1) {
+            activeMissionObject = Random.Range(0, 8);
+        } else if (activeMissionIndex == 2) {
+            activeMissionObject = Random.Range(4, 8);
+        } else if (activeMissionIndex == 3) {
+            activeMissionObject = 8;
+            stompIsActive = true;
+        }
+
+        spawnerController.ForceRelevantSpawn(activeMissionObject);
+
         mission = (Mission)activeMissionIndex;
     }
 
@@ -132,10 +161,19 @@ public class GameHandler : MonoBehaviour
         LeanTween.scale(go, new Vector3(0f, 0f, 1), 0.3f).setEaseInCubic();
         yield return new WaitForSeconds(0.5f);
         go.SetActive(false);
+        go.transform.localScale = new Vector3(1, 1, 1);
     }
 
     public void EndRoundWin() {
+        missionIsActive = false;
         roundsPassed++;
+        roundsPassedText.text = "ROUNDS PASSED: " + roundsPassed;
+
+        winCheck.SetActive(true);
+        LeanTween.scale(winCheck, new Vector3(1.3f, 1.3f, 1), 0.5f).setEasePunch();
+        StartCoroutine(InactivateObject(winCheck));
+
+        StartCoroutine(WaitToStartNewRound());
     }
 
     IEnumerator WaitToStartNewRound() {
@@ -147,6 +185,7 @@ public class GameHandler : MonoBehaviour
         doNotTouchText.gameObject.SetActive(false);
         touchText.gameObject.SetActive(false);
         defeatText.gameObject.SetActive(false);
+        watchOutText.gameObject.SetActive(false);
     }
 
     public void ActivateRelevantMissionText() {
@@ -156,6 +195,8 @@ public class GameHandler : MonoBehaviour
             touchText.SetActive(true);
         } else if (mission == (Mission)2) {
             defeatText.SetActive(true);
+        } else if (mission == (Mission)3) {
+            watchOutText.SetActive(true);
         }
     }
 

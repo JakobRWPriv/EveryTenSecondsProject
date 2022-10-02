@@ -44,7 +44,14 @@ public class TimerBar : MonoBehaviour
         } else if (remainingTime <= 0) {
             threeSecCountdown.text = "";
 
-            gameHandler.EndRoundFail();
+            if (gameHandler.mission == GameHandler.Mission.DoNotTouch) {
+                gameHandler.EndRoundWin();
+            } else if (gameHandler.mission == GameHandler.Mission.WatchOut) {
+                gameHandler.EndRoundWin();
+                gameHandler.stompIsActive = false;
+            } else {
+                gameHandler.EndRoundFail();
+            }
         }
     }
 
